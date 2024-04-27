@@ -36,6 +36,20 @@ module.exports = {
     }
   },
 
+  // Create New User
+  async createUser(req, res) {
+    try {
+      const newUser = await User.create(req.body);
+      return res
+        .status(200)
+        .json({ message: "Request Successful - New User", newUser });
+    } catch (err) {
+      return res
+        .status(500)
+        .json({ error: "Request Failed - New User", details: err });
+    }
+  },
+
   // Update User By ID
   async updateUserByID(req, res) {
     try {
