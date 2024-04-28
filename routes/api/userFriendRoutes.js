@@ -9,6 +9,6 @@ const {
 router.route("/:userId").post(addFriend);
 
 // Delete friend from user
-router.delete("./:userId/friends/:friendId")(deleteFriend);
+router.route("/:userId/friends/:friendId").delete(deleteFriend);
 
 module.exports = router;
