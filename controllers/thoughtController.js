@@ -10,7 +10,7 @@ module.exports = {
         { _id: req.body.userId },
         { $addToSet: { thoughts: newThought._id } },
         { new: true }
-      );
+      ).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "User ID Not Found" });
@@ -29,7 +29,7 @@ module.exports = {
   // Get All Thoughts
   async getThoughts(req, res) {
     try {
-      const getThoughts = await Thought.find();
+      const getThoughts = await Thought.find().select("-__v");
       return res
         .status(200)
         .json({ message: "Request Successful - Get Thoughts", getThoughts });
@@ -70,7 +70,7 @@ module.exports = {
 
         { $set: { thought: req.body.updatedThought } },
         { new: true }
-      );
+      ).select("-__v");
 
       if (!thought) {
         return res.status(404).json({ message: "Thought ID Not Found" });
@@ -92,7 +92,7 @@ module.exports = {
     try {
       const thought = await Thought.findByIdAndDelete({
         _id: req.params.thoughtID,
-      });
+      }).select("-__v");
 
       if (!thought) {
         return res.status(404).json({ message: "Thought ID Not Found" });

@@ -8,7 +8,7 @@ module.exports = {
         { _id: req.params.userID },
         { $set: { friends: req.body.friendID } },
         { runValidators: true, new: true }
-      );
+      ).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "User ID Not Found" });
@@ -31,7 +31,7 @@ module.exports = {
         { _id: req.params.userID },
         { $pull: { friends: req.params.friendID } },
         { runValidators: true, new: true }
-      );
+      ).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "User ID Not Found" });

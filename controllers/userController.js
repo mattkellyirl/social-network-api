@@ -4,7 +4,7 @@ module.exports = {
   // Get All Users
   async getUsers(req, res) {
     try {
-      const allUsers = await User.find();
+      const allUsers = await User.find().select("-__v");
       return res
         .status(200)
         .json({ message: "Request Successful - All Users", allUsers });
@@ -39,7 +39,7 @@ module.exports = {
   // Create New User
   async createUser(req, res) {
     try {
-      const newUser = await User.create(req.body);
+      const newUser = await User.create(req.body).select("-__v");
       return res
         .status(200)
         .json({ message: "Request Successful - New User", newUser });
@@ -53,7 +53,9 @@ module.exports = {
   // Update User By ID
   async updateUserByID(req, res) {
     try {
-      const user = await User.findOneAndUpdate({ _id: req.params.userID });
+      const user = await User.findOneAndUpdate({
+        _id: req.params.userID,
+      }).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "User ID Not Found" });
@@ -72,7 +74,9 @@ module.exports = {
   // Delete User By ID
   async deleteUserByID(req, res) {
     try {
-      const user = await User.findOneAndDelete({ _id: req.params.userID });
+      const user = await User.findOneAndDelete({
+        _id: req.params.userID,
+      }).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "User ID Not Found" });
