@@ -18,7 +18,7 @@ module.exports = {
   // Get User By ID
   async getUserByID(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userID }).select(
+      const user = await User.findOne({ _id: req.params.userId }).select(
         "-__v"
       );
 
@@ -37,13 +37,15 @@ module.exports = {
   },
 
   // Create New User
-  async createUser(req, res) {
+  async newUser(req, res) {
     try {
-      const newUser = await User.create(req.body).select("-__v");
+      const newUser = await User.create(req.body);
+      console.log("New user created:", newUser);
       return res
         .status(200)
         .json({ message: "Request Successful - New User", newUser });
     } catch (err) {
+      console.error("Error creating new user:", err);
       return res
         .status(500)
         .json({ error: "Request Failed - New User", details: err });
@@ -53,9 +55,10 @@ module.exports = {
   // Update User By ID
   async updateUserByID(req, res) {
     try {
-      const user = await User.findOneAndUpdate({
-        _id: req.params.userID,
-      }).select("-__v");
+      const user = await User.findByIdAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body }
+      ).select("-__v");
 
       if (!user) {
         return res.status(404).json({ message: "User ID Not Found" });
@@ -75,7 +78,7 @@ module.exports = {
   async deleteUserByID(req, res) {
     try {
       const user = await User.findOneAndDelete({
-        _id: req.params.userID,
+        _id: req.params.userId,
       }).select("-__v");
 
       if (!user) {

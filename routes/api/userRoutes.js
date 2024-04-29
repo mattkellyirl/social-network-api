@@ -3,13 +3,13 @@ const router = require("express").Router();
 const {
   getUsers,
   getUserByID,
-  createUser,
+  newUser,
   updateUserByID,
   deleteUserByID,
 } = require("../../controllers/userController");
 
 // Get all users and add new user
-router.route("/").get(getUsers).post(createUser);
+router.route("/").get(getUsers).post(newUser);
 
 // Get user by ID, update user by ID and delete user by ID
 router
