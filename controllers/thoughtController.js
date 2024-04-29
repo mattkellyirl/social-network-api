@@ -44,7 +44,7 @@ module.exports = {
   async getThoughtByID(req, res) {
     try {
       const thought = await Thought.findById({
-        _id: req.params.thoughtID,
+        _id: req.params.thoughtId,
       }).select("-__v");
 
       if (!thought) {
@@ -66,9 +66,8 @@ module.exports = {
   async updateThoughtByID(req, res) {
     try {
       const thought = await Thought.findByIdAndUpdate(
-        { _id: req.params.thoughtID },
-
-        { $set: { thought: req.body.updatedThought } },
+        { _id: req.params.thoughtId },
+        { $set: { thought: req.body.thought } },
         { new: true }
       ).select("-__v");
 
@@ -91,7 +90,7 @@ module.exports = {
   async deleteThoughtByID(req, res) {
     try {
       const thought = await Thought.findByIdAndDelete({
-        _id: req.params.thoughtID,
+        _id: req.params.thoughtId,
       }).select("-__v");
 
       if (!thought) {
