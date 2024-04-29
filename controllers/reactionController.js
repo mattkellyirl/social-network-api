@@ -5,7 +5,7 @@ module.exports = {
   // Create New Reaction
   async newReaction(req, res) {
     try {
-      const thoughtID = await Thought.findById(req.params.thoughtID).select(
+      const thoughtID = await Thought.findById(req.params.thoughtId).select(
         "-__v"
       );
       if (!thoughtID) {
@@ -31,15 +31,15 @@ module.exports = {
   // Delete Reaction By ID
   async deleteReactionByID(req, res) {
     try {
-      const thoughtID = await Thought.findById(req.params.thoughtID).select(
-        "-__v"
-      );
+      const thoughtID = await Thought.findOneAndUpdate(
+        req.params.thoughtId
+      ).select("-__v");
       if (!thoughtID) {
         return res.status(404).json({ message: "Thought ID Not Found" });
       } else {
-        await Thought.updateOne(
-          { _id: thoughtID },
-          { $pull: { reactions: { _id: req.params.reactionID } } }
+        await Thought.findByIdAndUpdate(
+          { _id: req.params.thoughtId },
+          { $pull: { reactions: { reactionId: req.params.reactionId } } }
         );
         return res.status(200).json({
           message: "Request Successful - Delete Reaction By ID",

@@ -1,14 +1,14 @@
-const router = require("express").Router();
+// const router = require("express").Router();
 
-const {
-  newReaction,
-  deleteReactionByID,
-} = require("../../controllers/reactionController");
+// const {
+//   newReaction,
+//   deleteReactionByID,
+// } = require("../../controllers/reactionController");
 
-// Add a new reaction for thought
-router.route("/:thoughtId/reactions").post(newReaction);
+// // Add a new reaction for thought
+// router.route("/:thoughtId/reactions").post(newReaction);
 
-// Delete reaction for thought
-router.route("/:thoughtId/reactions/:reactionId").delete(deleteReactionByID);
+// // Delete reaction for thought
+// router.route("/:thoughtId/reactions/:reactionId").delete(deleteReactionByID);
 
-module.exports = router;
+// module.exports = router;
