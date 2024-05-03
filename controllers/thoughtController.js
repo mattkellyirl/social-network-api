@@ -6,8 +6,8 @@ module.exports = {
   async newThought(req, res) {
     try {
       const newThought = await Thought.create(req.body);
-      const user = await User.findByIdAndUpdate(
-        { _id: req.body.userId },
+      const user = await User.findOneAndUpdate(
+        { username: req.body.username },
         { $addToSet: { thoughts: newThought._id } },
         { new: true }
       ).select("-__v");
@@ -43,7 +43,7 @@ module.exports = {
   // Get Thought By ID
   async getThoughtByID(req, res) {
     try {
-      const thought = await Thought.findById({
+      const thought = await Thought.findOne({
         _id: req.params.thoughtId,
       }).select("-__v");
 
@@ -65,7 +65,7 @@ module.exports = {
   // Update Thought By ID
   async updateThoughtByID(req, res) {
     try {
-      const thought = await Thought.findByIdAndUpdate(
+      const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
         { $set: { thought: req.body.thought } },
         { new: true }
@@ -89,7 +89,7 @@ module.exports = {
   // Delete Thought By ID
   async deleteThoughtByID(req, res) {
     try {
-      const thought = await Thought.findByIdAndDelete({
+      const thought = await Thought.findOneAndDelete({
         _id: req.params.thoughtId,
       }).select("-__v");
 

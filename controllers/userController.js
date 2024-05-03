@@ -55,9 +55,10 @@ module.exports = {
   // Update User By ID
   async updateUserByID(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(
+      const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $set: req.body }
+        { $set: req.body },
+        { new: true }
       ).select("-__v");
 
       if (!user) {

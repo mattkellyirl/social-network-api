@@ -1,24 +1,24 @@
-const Reaction = require("../models/Reaction");
+// const Reaction = require("../models/Reaction");
 const Thought = require("../models/Thought");
 
 module.exports = {
   // Create New Reaction
   async newReaction(req, res) {
     try {
-      const thoughtID = await Thought.findById(req.params.thoughtId).select(
-        "-__v"
-      );
-      if (!thoughtID) {
+      const thought = await Thought.findOne({
+        _id: req.params.thoughtId,
+      }).select("-__v");
+      if (!thought) {
         return res.status(404).json({ message: "Thought ID Not Found" });
       } else {
-        await Thought.updateOne(
-          { _id: thoughtID },
+        const updatedThought = await Thought.updateOne(
+          { _id: thought._id },
           { $addToSet: { reactions: req.body } },
           { runValidators: true, new: true }
         );
         return res.status(200).json({
           message: "Request Successful - New Reaction",
-          thoughtID,
+          updatedThought,
         });
       }
     } catch (err) {
@@ -31,19 +31,18 @@ module.exports = {
   // Delete Reaction By ID
   async deleteReactionByID(req, res) {
     try {
-      const thoughtID = await Thought.findOneAndUpdate(
-        req.params.thoughtId
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { new: true }
       ).select("-__v");
-      if (!thoughtID) {
+
+      if (!thought) {
         return res.status(404).json({ message: "Thought ID Not Found" });
       } else {
-        await Thought.findByIdAndUpdate(
-          { _id: req.params.thoughtId },
-          { $pull: { reactions: { reactionId: req.params.reactionId } } }
-        );
         return res.status(200).json({
           message: "Request Successful - Delete Reaction By ID",
-          thoughtID,
+          thought,
         });
       }
     } catch (err) {
